@@ -115,7 +115,7 @@ function postChatMessage(message) {
         let peerName = document.createElement('pre');
         let ts = new Date(message.timestamp / 1000);
         peerName.className = "message-author";
-        peerName.textContent = message.peerName + " at " + ts.toLocaleTimeString([], {timeStyle: 'short'});
+        peerName.textContent = message.peerName + " tại " + ts.toLocaleTimeString([], {timeStyle: 'short'});
         messageElem.append(peerName);
         messageField.append(messageElem);
     }
@@ -571,11 +571,48 @@ document.forms.publish.onsubmit = function() {
 
 document.getElementById('chat_input').addEventListener("keypress", function (e) {
     if(e.which == 13 && !e.shiftKey) {
+        var inputValue = document.getElementById('chat_input').value;
         document.forms.publish.onsubmit();
         e.preventDefault();
+        // Get the value of the chat input
+        
+
+        // Get the current base URL from the window.location object
+        var baseUrl = getCurrentBaseUrl();
+
+        // Get the current roomId from the URL
+        var roomId = getCurrentRoomId();
+
+        var xhr = new XMLHttpRequest();
+        
+        // Construct the URL dynamically
+        var apiUrl = baseUrl + "/room/encrypt/" + roomId + "/" + peerName + "/" + encodeURIComponent(inputValue);
+        xhr.open("GET", apiUrl, true);
+
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4) {
+                if (xhr.status == 200) {
+                    // Handle the response from the server if needed
+                    console.log("Server response:", xhr.responseText);
+                } else {
+                    // Handle errors
+                    console.error("Error:", xhr.statusText);
+                }
+            }
+        };
+
+        xhr.send();
     }
 });
-
+function getCurrentBaseUrl() {
+    return window.location.protocol + "//" + window.location.host;
+}
+function getCurrentRoomId() {
+    var pathParts = window.location.pathname.split('/');
+    if(pathParts[pathParts.length - 1]!='')
+        return pathParts[pathParts.length - 1];
+    else return pathParts[pathParts.length - 2]
+}
 document.getElementById('chat_input').addEventListener("input", function () {
 
     let now = (new Date()).getTime();
@@ -628,7 +665,7 @@ function onMessage(message) {
                     code: CODE_PEER_JOINED,
                     peerId: peerId,
                     peerName: peerName,
-                    message: peerName + " - joined room"
+                    message: peerName + " - đã tham gia phòng"
                 });
             }
 

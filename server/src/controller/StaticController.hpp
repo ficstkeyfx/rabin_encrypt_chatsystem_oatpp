@@ -33,6 +33,8 @@
 #include "oatpp/core/macro/codegen.hpp"
 #include "oatpp/core/macro/component.hpp"
 
+#include "rabin/rabin.hpp"
+
 #include <regex>
 
 #include OATPP_CODEGEN_BEGIN(ApiController) /// <-- Begin Code-Gen
@@ -65,6 +67,53 @@ public:
       static auto fileCache = loadFile(FRONT_PATH "/index.html");
       auto response = controller->createResponse(Status::CODE_200, fileCache);
       response->putHeader(Header::CONTENT_TYPE, "text/html");
+      return _return(response);
+    }
+
+  };
+
+  ENDPOINT_ASYNC("GET", "/room/encrypt/{roomId}/{peerName}/{massage}", Encrypt) {
+
+    ENDPOINT_ASYNC_INIT(Encrypt)
+
+    Action act() override {
+      static auto fileCache = loadFile(FRONT_PATH "/index.html");
+      auto response = controller->createResponse(Status::CODE_200, fileCache);
+      response->putHeader(Header::CONTENT_TYPE, "text/html");
+      std::string massageValue = request->getPathVariable("massage");
+      std::string roomId = request->getPathVariable("roomId");
+      std::string peerName = request->getPathVariable("peerName");
+      std::string decodedString;
+      std::string peerNamedecode;
+      for (std::size_t i = 0; i < peerName.size(); ++i) {
+          if (peerName[i] == '%' && i + 2 < peerName.size()) {
+              int value;
+              if (sscanf(peerName.substr(i + 1, 2).c_str(), "%x", &value) == 1) {
+                  peerNamedecode += static_cast<char>(value);
+                  i += 2; // Move to the next triplet
+                  continue;
+              }
+          }
+        peerNamedecode += peerName[i];
+      }
+
+
+      for (std::size_t i = 0; i < massageValue.size(); ++i) {
+          if (massageValue[i] == '%' && i + 2 < massageValue.size()) {
+              int value;
+              if (sscanf(massageValue.substr(i + 1, 2).c_str(), "%x", &value) == 1) {
+                  decodedString += static_cast<char>(value);
+                  i += 2; // Move to the next triplet
+                  continue;
+              }
+          }
+        decodedString += massageValue[i];
+      }
+      
+      RabinCryptosystem cryptosystem(167, 151, decodedString);
+      OATPP_LOGI("Rabinchat", " Giá trị của massage tại phòng %s của %s trước khi mã hóa: %s", roomId.c_str(), peerNamedecode.c_str(), decodedString.c_str());
+      OATPP_LOGI("Rabinchat", " Giá trị của massage tại phòng %s của %s sau khi mã hóa: %s", roomId.c_str(), peerNamedecode.c_str(), cryptosystem.encode().c_str());
+      OATPP_LOGI("Rabinchat", " Giá trị của massage tại phòng %s của %s sau khi giải hóa: %s", roomId.c_str(), peerNamedecode.c_str(), cryptosystem.decode().c_str());
       return _return(response);
     }
 

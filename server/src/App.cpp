@@ -75,13 +75,13 @@ void run(const oatpp::base::CommandLineArguments& args) {
   OATPP_COMPONENT(oatpp::Object<ConfigDto>, appConfig);
 
   if(appConfig->useTLS) {
-    OATPP_LOGI("canchat", "clients are expected to connect at https://%s:%d/", appConfig->host->c_str(), *appConfig->port);
+    OATPP_LOGI("Rabinchat", " Link kết nối với người dùng: https://%s:%d/", appConfig->host->c_str(), *appConfig->port);
   } else {
-    OATPP_LOGI("canchat", "clients are expected to connect at http://%s:%d/", appConfig->host->c_str(), *appConfig->port);
+    OATPP_LOGI("Rabinchat", " Link kết nối với người dùng: http://%s:%d/", appConfig->host->c_str(), *appConfig->port);
   }
 
-  OATPP_LOGI("canchat", "canonical base URL=%s", appConfig->getCanonicalBaseUrl()->c_str());
-  OATPP_LOGI("canchat", "statistics URL=%s", appConfig->getStatsUrl()->c_str());
+  OATPP_LOGI("Rabinchat", " URL=%s", appConfig->getCanonicalBaseUrl()->c_str());
+  OATPP_LOGI("Rabinchat", " Thống kê tại URL=%s", appConfig->getStatsUrl()->c_str());
 
   serverThread.join();
   pingThread.join();
