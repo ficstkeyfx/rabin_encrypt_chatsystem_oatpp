@@ -1,8 +1,5 @@
-# Rabin-Cryptosystem-Chat [![Build Status](https://dev.azure.com/lganzzzo/lganzzzo/_apis/build/status/lganzzzo.canchat?branchName=master)](https://dev.azure.com/lganzzzo/lganzzzo/_build/latest?definitionId=24&branchName=master)
-
-![Rabin-Cryptosystem-Chat](https://upload.wikimedia.org/wikipedia/commons/0/0a/Tr%C3%A5dtelefon-illustration.png)
-
-Feature-complete rooms-based chat for tens of thousands users. Client plus Server. Built with [Oat++ Web Framework](https://oatpp.io/).   
+# Rabin-Cryptosystem-Chat
+Xây dựng dựa trên [Oat++ Web Framework](https://oatpp.io/).   
 `Single-Node` `In-Memory` `WebSocket` `TLS`.
 
 
@@ -10,7 +7,7 @@ Feature-complete rooms-based chat for tens of thousands users. Client plus Serve
 
 ### Rooms
 
-Sử dụng hệ mật mã Rabin để mã hóa tin nhắn đầu cuối
+Sử dụng hệ mật mã Rabin để mã hóa tin nhắn đầu cuối tin nhắn mã hóa sẽ được hiển thị trong console của server.
 
 ## Build And Run
 
