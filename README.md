@@ -36,6 +36,7 @@ Now run chat server
 ```bash
 $ canchat-exe --host localhost --port 8443
 ```
+*Hoặc có thể tải bản release trong repo để vào thư mục /server/build/
 
 ### Docker
 
